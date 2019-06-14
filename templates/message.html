@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+
+    <link rel="stylesheet" href="/static/index/site.css">
+    <link href="/static/index/index_content.css" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="/static/user/frame.css">
+
+    {# 头像 #}
+    <link rel="stylesheet" type="text/css" href="/static/user/head/font-awesome.4.6.0.css">
+    <link rel="stylesheet" href="/static/user/head/amazeui.min.css">
+    <link rel="stylesheet" href="/static/user/head/amazeui.cropper.css">
+    <link rel="stylesheet" href="/static/user/head/custom_up_img.css">
+
+{#    <script src="/static/user/head/jquery-1.8.3.min.js"></script>#}
+    <script src="/static/jquery-2.1.1.min.js"></script>
+    <script src="/static/user/head/amazeui.min.js" charset="utf-8"></script>
+    <script src="/static/user/head/cropper.min.js" charset="utf-8"></script>
+    <script src="/static/user/head/custom_up_img.js" charset="utf-8"></script>
+    {# bootstrap #}
+
+
+        {# 背景特效 #}
+    <link rel="stylesheet" href="/static/back/back_style.css" />
+
+    <style type="text/css">
+        .up-img-cover {
+            width: 100px;
+            height: 100px;
+        }
+
+        .up-img-cover img {
+            width: 100%;
+        }
+    </style>
+
+
+
+
+</head>
+<body>
+
+
+
+{% include './head.html'%}
+{% include './head2.html'%}
+
+<div style="margin-left: 16%;padding-top:50px;width: 65%;background-color: #ffffff;min-height: 1340px">
+    {# 头 #}
+    <div id="Pl_Official_Headerv6__1">
+        <div class="PCD_header">
+            <div class="pf_wrap" layout-shell="false" node-type="cover_wrap">
+                <div class="cover_wrap banner_transition" node-type="cover"
+                     style="background-image:url(/static/user/user_back.jpg)" cover-type="1">
+                </div>
+                <div class="shadow  S_shadow" layout-shell="false">
+
+                    {% if action != 'getprofile' %}
+                        <div class="pf_photo" node-type="photo">
+                            {# <p class="photo_wrap"><img src="/media/{{ user_mess.headImage }}" alt="山南枝青" class="photo"></p> #}
+                            <div class="up-img-cover" id="up-img-touch">
+                                <img class="am-circle" alt="点击图片上传" src="{% if action == 'getprofile' %}/media/
+                                    {{ other_message.headImage }}{% else %}/media/{{ user_mess.headImage }}{% endif %}"
+                                     data-am-popover="{content: '点击上传', trigger: 'hover focus'}">
+                            </div>
+
+                        </div>
+                    {% else %}
+                        <div class="pf_photo" node-type="photo">
+                            {# <p class="photo_wrap"><img src="/media/{{ user_mess.headImage }}" alt="山南枝青" class="photo"></p> #}
+                            <div class="up-img-cover" id="">
+                                <img class="am-circle" alt="点击图片上传" src="{% if action == 'getprofile' %}/media/{{ other_message.headImage }}{% else %}/media/{{ user_mess.headImage }}{% endif %}"
+                                     data-am-popover="{content: '点击上传', trigger: 'hover focus'}">
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+                    {% if action != 'getprofile' %}
+                        <div class="pf_username" style="color: #0F2027">
+                            <h1 class="username" style="color: white">昵称：{{user_mess.nick_name }}</h1>
+                            <span class="icon_bed"></span>
+                        </div>
+                        <div class="pf_intro">
+                        <a class="tlink" href="/5415830208/info">{{ user_mess.about }}</a>
+                    </div>
+                    {% else %}
+                        <div class="pf_username" style="color: #0F2027">
+                            <h1 class="username" style="color: white">昵称：{{ other_message.nick_name }}</h1>
+                            <span class="icon_bed"></span>
+                        </div>
+                        <div class="pf_intro">
+                        <a class="tlink" href="/5415830208/info">{{ other_message.about }}</a>
+                        </div>
+                    {% endif %}
+
+
+
+                    {% if other_message %}
+                        {% if other_message.username == username %}
+                            <div style="width: 45px;height: 0px;background-color: black;margin: auto">
+                                <button class="btn btn-success btn-xs" style="margin: auto"><a
+                                        href="/login/user/message/?action=edit&uid={{ user_mess.username }}">修改资料</a>
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if user_mess.username == username %}
+                            <div style="width: 45px;height: 0px;background-color: black;margin: auto">
+                                <button class="btn btn-success btn-xs" style="margin: auto"><a
+                                        href="/login/user/message/?action=edit&uid={{ user_mess.username }}">修改资料</a>
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!--个人信息-->
+        <hr>
+        {% if action == "edit" %}
+            <h1 style="text-align: center;font-size: 20px">编辑信息</h1>
+            <form action="/login/user/message/" method="post">
+                <div style="width: 70%;margin: auto;font-size: 20px;padding-top: 50px">
+                    <input type="hidden" name="uid" value="{{ user_mess.username }}">
+                    <a style="color: #0F2027">昵称：</a><input style="margin-left: 30px" class="form-control"
+                                                            name="nickname" placeholder="昵称" type="text"
+                                                            value="{{ user_mess.nick_name }}">
+                    <a style="color: #0F2027">邮箱：</a><input style="margin-left: 30px" class="form-control" name="email"
+                                                            placeholder="邮箱" type="email"
+                                                            value="{{ user_mess.email }}">
+                    <a style="color: #0F2027">QQ：</a><input style="margin-left: 30px" class="form-control" name="QQ"
+                                                            placeholder="QQ" type="text"
+                                                            value="{{ user_mess.QQ }}">
+                    <a style="color: #0F2027">地址：</a><input style="margin-left: 30px" class="form-control" name="addr"
+                                                            placeholder="地址" type="text"
+                                                            value="{{ user_mess.addr }}">
+                    <a style="color: #0F2027">微信：</a><input style="margin-left: 30px" class="form-control" name="WeChat"
+                                                            placeholder="微信" type="text"
+                                                            value="{{ user_mess.WeChats }}">
+                    <a style="color: #0F2027">性别：</a>
+                    <div style="margin-left: 30px">
+                        <td>
+                            <select name="male" style="height: 32px">
+                                {% if user_mess.male == "男" %}
+
+                                    <option value="男"><a style="color: #0F2027">男</a></option>
+                                    <option value=女"><a style="color: #0F2027">女</a></option>
+                                    <option value="不显示"><a style="color: #0F2027">不显示</a></option>
+                                {% elif user_mess.male == "女" %}
+                                    <option value="女"><a style="color: #0F2027">女</a></option>
+                                    <option value="男"><a style="color: #0F2027">男</a></option>
+                                    <option value="不显示"><a style="color: #0F2027">不显示</a></option>
+                                {% else %}
+                                    <option value="不显示"><a style="color: #0F2027">不显示</a></option>
+                                    <option value="男"><a style="color: #0F2027">男</a></option>
+                                    <option value="女"><a style="color: #0F2027">女</a></option>
+                                {% endif %}
+                            </select>
+                        </td>
+
+                    </div>
+                    <a style="color: #0F2027">简介：</a><textarea style="margin-left: 30px" class="form-control" rows="3"
+                                                               id="textArea" name="about"
+                                                               placeholder="在这里留下你的简介吧">{{ user_mess.about }}</textarea>
+                    {% csrf_token %}
+                    <button type="submit" style="margin-left: 30px;margin-top: 5px"
+                            class="btn btn-default btn-lg btn-block"><a style="color: #0F2027">保存修改</a></button>
+            </form>
+    </div>
+
+
+        {% elif action == 'getprofile' %}
+            <div style="width: 70%;margin: auto;font-size: 15px;padding-top: 50px;color: black">
+                昵称：{{ other_message.nick_name }}
+                <hr>
+                邮箱：{{ other_message.email }}
+                <hr>
+                QQ：{{ other_message.QQ }}
+                <hr>
+                地址：{{ other_message.addr }}
+                <hr>
+                微信：{{ other_message.WeChats }}
+                <hr>
+                性别：{{ other_message.male }}
+                <hr>
+                简介：{{ other_message.about }}
+
+            </div>
+
+
+
+        {% else %}
+            <div style="width: 70%;margin: auto;font-size: 15px;padding-top: 50px;color: black">
+                昵称：{{ user_mess.nick_name }}
+                <hr>
+                邮箱：{{ user_mess.email }}
+                <hr>
+                QQ：{{ user_mess.QQ }}
+                <hr>
+                地址：{{ user_mess.addr }}
+                <hr>
+                微信：{{ user_mess.WeChats }}
+                <hr>
+                性别：{{ user_mess.male }}
+                <hr>
+                简介：{{ user_mess.about }}
+
+            </div>
+        {% endif %}
+    {# 帖子表 #}
+    <div style="width: 70%;margin: auto">
+
+        <h3 style="text-align: center;margin-top: 20px;color: #b3b7bb">发表记录</h3>
+
+        <hr>
+        {% for each in articleList %}
+            <div style="position: relative; border-bottom: 1px solid rgb(238, 238, 238); padding: 20px 0px;"><h6
+                    style="margin: 0px 0px 10px;">
+                {% if each.state == True %}
+                    <a style="color: #139ff7">[已找回]</a>
+                {% else %}
+                    <a style="color: #FF0000">[未找回]</a>
+                {% endif %}
+                <a href="/index/content/?article_id={{ each.article_id }}" style="color: black">{{ each.title }}</a>
+            </h6>
+                <div dir="ltr" role="row" class="next-row">
+                    <div dir="ltr" role="gridcell" class="next-col next-col-l-16">
+                        <div style="display: flex; padding-left: 15px;">
+                            <div style="font-size: 13px; color: rgb(153, 153, 153); margin-right: 15px;">
+                                <span>地点: </span><span>{{ each.addr }}</span></div>
+                            <div style="font-size: 13px; color: rgb(153, 153, 153); margin-right: 15px;">
+                                <span>时间: </span><span>{{ each.lostdate }}</span>
+                            </div>
+                            <div style="font-size: 13px; color: rgb(153, 153, 153); margin-right: 15px;">
+                                <span>物品: </span><span>{{ each.item }}</span></div>
+
+                        </div>
+                    </div>
+
+                    {% if user_mess.username == each.uid or user_mess.is_superuser %}
+                        <div dir="ltr" role="gridcell" class="next-col next-col-l-8">
+                            <div style="position: absolute; right: 0px; top: 36px; display: flex; cursor: pointer;">
+                                {% if each.content_verify == 1 %}
+                                    {% if each.state == False %}
+{#                                         已找回按钮#}
+                                        <td><button href="javascript:;" class="md-trigger btn btn-success btn-xs" data-modal="modal-9" value="{{ each.article_id }}">找回</button></td>
+{#                                        <button class="md-trigger btn btn-success btn-xs" data-toggle="modal-9"#}
+{##}
+{#                                                data-target="#myModal" value="{{ each.article_id }}">已找回#}
+{#                                        </button>#}
+                                        {#                                <div style="margin-left: 15px; font-size: 13px; color: rgb(153, 153, 153);"><i#}
+                                        {#                                        class="next-icon next-icon-edit next-xs" style="margin-right: 8px;"></i><span><a#}
+                                        {#                                        href="/api/deal/?action=re&aid={{ each.article_id }}">已找回</a></span>#}
+                                        {#                                </div>#}
+                                    {% endif %}
+                                {% elif each.content_verify == 0 %}
+                                    <button class="btn btn-warning btn-xs" value="{{ each.article_id }}">未审核</button>
+
+                                {% elif each.content_verify == 2 %}
+                                    <button class="btn btn-danger btn-xs" value="{{ each.article_id }}">审核不通过</button>
+                                {% endif %}
+
+                                {#                                <div style="margin-left: 15px; font-size: 13px; color: rgb(153, 153, 153);"><i#}
+                                {#                                        class="next-icon next-icon-ashbin next-xs" style="margin-right: 8px;"></i><span><a#}
+                                {#                                        href="/api/deal/?action=delete&aid={{ each.article_id }}">删除</a></span>#}
+                                {#                                </div>#}
+                                {# 删除按钮 #}
+                                <button class="btn btn-danger btn-xs" style="margin-left: 15px"><a
+                                        href="/api/deal/?action=delete&aid={{ each.article_id }}"
+                                        style="color: #ffffff">删除</a></button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+
+
+
+    <!--图片上传框-->
+    <div class="am-modal am-modal-no-btn up-frame-bj " tabindex="-1" id="doc-modal-1">
+        <div class="am-modal-dialog up-frame-parent up-frame-radius">
+            <div class="am-modal-hd up-frame-header">
+                <label>修改头像</label>
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd  up-frame-body">
+                <div class="am-g am-fl">
+                    <div class="am-form-group am-form-file">
+                        <div class="am-fl">
+                            <button type="button" class="am-btn am-btn-default am-btn-sm">
+                                <i class="am-icon-cloud-upload"></i> 选择要上传的文件
+                            </button>
+                        </div>
+                        <input type="file" id="inputImage">
+                    </div>
+                </div>
+                <div class="am-g am-fl">
+                    <div class="up-pre-before up-frame-radius">
+                        <img alt="" src="" id="image">
+                    </div>
+                    <div class="up-pre-after up-frame-radius">
+                    </div>
+                </div>
+                <div class="am-g am-fl">
+                    <div class="up-control-btns">
+                        <span class="am-icon-rotate-left" onclick="rotateimgleft()"></span>
+                        <span class="am-icon-rotate-right" onclick="rotateimgright()"></span>
+                        <span class="am-icon-check" id="up-btn-ok" url="/login/user/head/"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--加载框-->
+    <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">正在上传...</div>
+            <div class="am-modal-bd">
+                <span class="am-icon-spinner am-icon-spin"></span>
+            </div>
+        </div>
+    </div>
+
+    <!--警告框-->
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">信息</div>
+            <div class="am-modal-bd" id="alert_content">
+                成功了
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+
+    {#弹出输入框#}
+
+    {#    冲突了#}
+{#    <script src="/static/bootstrap.min.js" charset="utf-8"></script>#}
+    {#    冲突了#}
+    {% include 'test.html' %}
+
+
+
+
+
+    {#弹出输入框#}
+    <script>
+        $('button').click(function () {
+            $('#aid').val($(this).val())
+
+            $('#ip').val($('#aid').val())
+
+        })
+    </script>
+
+
+</div>
+
+{#底部#}
+{##}
+{#{% include "foot.html" %}#}
+{##}
+
+{% include 'left.html' %}
+
+{#右边#}
+
+
+</body>
+</html>
+

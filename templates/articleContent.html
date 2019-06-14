@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详情页</title>
+
+    <link rel="stylesheet" href="/static/index/site.css">
+    <link href="/static/index/index_content.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/article/comment.css">
+
+    {# 分页插件 #}
+    <link rel="stylesheet" href="/static/article/pagination.css" />
+
+    <script src="/static/article/jquery.min.js"></script>
+    <script src="/static/article/pagination2.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <script src="/static/Login/jquery-2.1.1.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+
+        {# 背景特效 #}
+    <link rel="stylesheet" href="/static/back/back_style.css" />
+
+    <style type="text/css">
+
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+
+        .Content_text {
+
+            background-color: white;
+            width: 95%;
+            min-height: 500px;
+            margin: auto;
+            padding-top: 10px;
+            color: black;
+
+        }
+
+        .Content_div{
+
+            border-style: solid;
+
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-color: #8e908c #8e908c #8e908c #8e908c;
+            box-shadow: #8e908c;
+        }
+
+        {#设置全局p标签的颜色#}
+        p{
+                        color: black;
+        }
+
+        .CommentBox {
+            width: 90%;
+            margin: auto;
+
+            box-shadow: 5px 5px 5px #8888884d;
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+{% include './head.html'%}
+
+{#{% include 'test.html' %}#}
+
+<div style="padding-top:50px;background-color: #ffffff;margin-left: 16%;width: 65%">
+    {% include './head2.html'%}
+
+    <div style="min-height: 1280px;">
+        <h3 style="text-align: center;color: #8e908c">{{ article.title }}</h3>
+        <h5 style="text-align: center;color: #8e908c">
+                <span>{{ article.releasedate }} {{ article.item }} {{ article.addr }} 发布者:<a
+                        href="/login/user/message/?action=getprofile&username={{ article.uid }}" style="color:#b3b7bb;">{{ article.uid }}</a></span>
+        </h5>
+{#        管理区域#}
+    {% if user_mess.username == each.uid or user_mess.is_superuser %}
+        <div style="width: 7%;min-width: 80px;height: 30px;margin: auto">
+        <button style="float: left" class="btn btn-success btn-xs" ><a href="/index/edit/?action=edit&article_id={{ article.article_id }}">编辑</a></button>
+        <button style="float: right" class="btn btn-danger btn-xs" ><a href="/index/edit/?action=del&article_id={{ article.article_id }}">删除</a></button>
+        </div>
+    {%  endif %}
+        <hr>
+        {#主题内容#}
+        <div style="margin: auto;margin-top: 1%;width: 90%" class="Content_div">
+
+{#            内容区#}
+            <div style="" class="Content_text">
+
+                {% autoescape off %}
+
+                    {{ article.content }}
+
+                {% endautoescape %}
+
+            </div>
+
+        </div>
+
+        {# 评论区 #}
+        <h3 style="text-align: center;color: #8e908c">评论区</h3>
+        {% for each in comment %}
+            <div class="CommentBox">
+                <div class="msgCon">
+                    <div class="msgBox">
+                        <div class="headUrl">
+                            <img src="/media/{{ each.auth_head }}" width="50" height="50">
+                            <div>
+                            <span class="title"><a
+                                    href="/login/user/message/?action=getprofile&username={{ each.comment_auth }}">{{ each.auth_nickname }}</a></span>
+                                <span class="time">{{ each.comment_date }}</span>
+                            </div>
+                            {% if username == user_mess.username or user_mess.is_superuser %}
+                                <a class="del" onclick="test_post()">删除</a>
+                                <form id="testform" method="post"
+                                      action="/index/content/?article_id={{ article.article_id }}">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="delcomment" name="delcomment" value="{{ each.id }}">
+                                    <input type="hidden" id="action" name="action" value="del">
+
+                                </form>
+                                <script>
+                                    function test_post() {
+                                        var testform = document.getElementById("testform");
+                                        testform.action = "/index/content/?article_id={{ article.article_id }}";
+                                        testform.submit();
+                                    }
+                                </script>
+                            {% endif %}
+                        </div>
+                        <div class="msgTxt">
+                            {% autoescape off %}{{ each.comment_content }}{% endautoescape %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div style="height: 60px;width: 100%;padding-top: 20px">
+            {% if comment.count >= 5 or currentPage > 1 %}
+                <div style="margin: auto;text-align: center;">
+
+                    <div class="box" id="wrap1" style="color: black"></div>
+                </div>
+            {% endif %}
+        </div>
+        {# 评论富文本 #}
+        <div style="width: 90%;margin: auto;height: auto;padding-bottom: 30px">
+
+            <script type="text/javascript" src="/static/article/wangEditor.js"></script>
+            <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+            <form method="post" action="/index/content/?article_id={{ article.article_id }}">
+
+
+                <div id="div1">
+
+                </div>
+
+                <input type="hidden" id="text1" name="comment_content">
+
+                <input type="hidden" id="action" name="action" value="add">
+                {% csrf_token %}
+
+                <div style="margin: auto">
+                    <button type="submit" class="btn btn-primary" style="width: 100%">发表评论</button>
+                </div>
+
+            </form>
+
+            <script type="text/javascript">
+                var E = window.wangEditor
+                var editor = new E('#div1')
+                var $text1 = $('#text1')
+                editor.customConfig.onchange = function (html) {
+                    // 监控变化，同步更新到 textarea
+                    $text1.val(html)
+                }
+                editor.create()
+                // 初始化 textarea 的值
+                $text1.val(editor.txt.html())
+            </script>
+
+            <script type="text/javascript">
+
+                $().ready(function () {
+                    // the body of this function is in assets/material-kit.js
+                    materialKit.initSliders();
+                    window_width = $(window).width();
+
+                    if (window_width >= 992) {
+                        big_image = $('.wrapper > .header');
+
+                        $(window).on('scroll', materialKitDemo.checkScrollForParallax);
+                    }
+
+                });
+
+                var onPagechange = function (page) {
+                    console.log('当前点击页码', page);
+                }
+                var obj = {
+                    wrapid: 'wrap1', //页面显示分页器容器id
+                    total:{{ total }},//总条数
+                    pagesize: 5,//每页显示10条
+                    currentPage:{{ currentPage }},//当前页
+                    onPagechange: onPagechange,
+                    titleid:{{ article.article_id }},
+                    //btnCount:7 页数过多时，显示省略号的边界页码按钮数量，可省略，且值是大于5的奇数
+                }
+                pagination.init(obj);
+            </script>
+        </div>
+
+    </div>
+
+</div>
+
+{#右边#}
+
+{% include 'left.html' %}
+
+{#底部#}
+{% include "foot.html" %}
+
+
+</body>
+</html>

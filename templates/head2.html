@@ -1,0 +1,164 @@
+<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/static/Extract/head/index.css" />
+<link rel="stylesheet" href="/static/bootstrap.min.css">
+
+
+<div class="s-side" style="padding-top: 50px;z-index: 9999">
+	<ul>
+		<!--这部分是导航栏信息。-->
+		<li class="s-firstItem first">
+			<a href="#">
+				<i class="fa fa-home"></i>
+				<span><a href="/index/" style="font-size: 30px">首页</a></span>
+			</a>
+		</li>
+
+
+{#        发表内容#}
+		<li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-pencil"></i>
+				<span>发表内容</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/index/edit/">遗失物品</a>
+				</li>
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/index/edit/">拾取到物品</a>
+				</li>
+			</ul>
+		</li>
+{#        个人信息#}
+        <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-user"></i>
+				<span>个人信息</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/login/user/message/">用户资料</a>
+				</li>
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/login/user/message/?action=edit&uid={{ user_mess.username }}">修改资料</a>
+				</li>
+                <li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/admin/password_change/">修改密码</a>
+				</li>
+			</ul>
+		</li>
+{#        审核#}
+        {% if user_mess.is_superuser %}
+            <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-list-alt"></i>
+				<span>审核内容</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/reviewed/">待审核</a>
+				</li>
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/reviewed/?type=auditing">审核通过</a>
+				</li>
+                <li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/reviewed/?type=Unaudited">审核不通过</a>
+				</li>
+			</ul>
+		</li>
+        {% endif %}
+{#        已找回#}
+        <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-ok"></i>
+				<span>已找回</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/recover/">已找回物品</a>
+				</li>
+			</ul>
+		</li>
+{#        消息#}
+        <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-envelope"></i>
+				<span>消息{% if message %}[{{ message }}]{% endif %}</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/index/message/">收到的回复{% if message %}[{{ message }}]{% endif %}</a>
+				</li>
+			</ul>
+		</li>
+{#        管理员#}
+        {% if user_mess.is_superuser %}
+            <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-lock"></i>
+				<span>管理员</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/admin">管理网站</a>
+				</li>
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="/reviewed/">审核内容</a>
+				</li>
+			</ul>
+		</li>
+        {% endif %}
+
+{#        关于#}
+        <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-tag"></i>
+				<span>关于本站</span>
+				<i class="fa fa-caret-right fr" ></i>
+			</div>
+			<ul class="d-firstDrop s-firstDrop">
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="#">开发人员</a>
+				</li>
+				<li class="s-secondItem">
+					<i class="fa fa-minus-square-o"></i>
+					<a href="#">本站信息</a>
+				</li>
+			</ul>
+		</li>
+        {#        登录/切换#}
+        <li class="first">
+			<div class="d-firstNav s-firstNav">
+				<i style="font-size: 13px" class="glyphicon glyphicon-off"></i>
+				<a href="/login/" style="padding-left: 10px">登录/切换</a>
+
+
+			</div>
+
+		</li>
+	</ul>
+</div>
+
+
+
+<script type="text/javascript" src="/static/Extract/head/index.js" ></script>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>审核</title>
+    <link rel="stylesheet" href="/static/index/site.css">
+
+    <script src="/static/jquery-2.1.1.min.js"></script>
+    <script src="/static/bootstrap.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+
+
+        {# 背景特效 #}
+    <link rel="stylesheet" href="/static/back/back_style.css" />
+
+    {# 图片样式 #}
+    <style type="text/css">
+
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+
+    </style>
+
+
+</head>
+
+<body class="">
+
+{% include './head.html'%}
+{% include './head2.html'%}
+
+
+<div style="width: 65%;background-color: #ffffff;min-height: 1340px;margin-left: 16%">
+{# 导航条 #}
+<div style="padding-top: 50px;width: 100%;margin: auto;background-color: #ffffff">
+
+    <ul class="nav nav-tabs ">
+        <li role="presentation"><a href="/reviewed/" style="color: black">待审核</a></li>
+        <li role="presentation"><a href="/reviewed/?type=auditing" style="color: black">已审核</a></li>
+        <li role="presentation"><a href="/reviewed/?type=Unaudited" style="color: black">未通过</a></li>
+    </ul>
+</div>
+{# 内容 #}
+<div class="list-group" style="width: 100%;margin: auto">
+    {% for each in article_list %}
+        <button type="button" class="list-group-item" value="{{ each.article_id }}" data-toggle="modal" data-target="#myModal" id="bb">
+            {% if each.content_verify == 0 %}
+                <a style="color: #FF0000">[待审核]</a>
+            {% elif each.content_verify == 1 %}
+                <a style="color: #00FF00">[已通过]</a>
+            {% elif each.content_verify == 2 %}
+                <a style="color: #68615e">[未通过]</a>
+            {% endif %}{{ each.title }}
+        </button>
+    {% endfor %}
+
+</div>
+</div>
+
+
+{# 弹框组件 #}
+{#弹出输入框#}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="margin-top: 52px">
+		<div class="modal-content" style="color: #8e908c">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel" style="text-align: center">
+					帖子内容
+				</h4>
+			</div>
+				<div class="modal-body" id="aa">
+			<!-- 内容区域 -->
+
+            <!-- form表单区域 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="aid2">不通过</button>
+					<button type="submit" class="btn btn-primary" data-dismiss="modal" value="" id="aid">
+						通过
+					</button>
+				</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+{#底部#}
+{% include "foot.html" %}
+
+{#右边#}
+
+{% include 'left.html' %}
+
+{#弹出输入框#}
+<script>
+    $('#aid').click(function () {
+        var aid = $(this).val()
+        $.get("/reviewed/?action=pass&reviewed_id="+aid,function(data,status){alert('审核通过')});
+         window.location.href="./";
+    })
+
+    $('#aid2').click(function () {
+        var aid = $(this).val()
+        $.get("/reviewed/?action=un&reviewed_id="+aid,function(data,status){alert('已拒绝审核')});
+        window.location.href="./";
+    })
+
+	$('button').click(function () {
+	    var aid = $(this).val()
+
+	    $.get("/api/getarticle/?aid="+aid,function(data,status){$('#aa').html(data)});
+        //$('#aa').append('<h1>HelloWorld</h1>')
+		$('#aid').val($(this).val())
+		$('#aid2').val($(this).val())
+	})
+
+</script>
+
+</body>
+</html>

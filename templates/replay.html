@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的回复</title>
+    <link rel="stylesheet" href="/static/index/site.css">
+    <link rel="stylesheet" href="/static/article/comment.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <script src="/static/Login/jquery-2.1.1.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+
+        {# 背景特效 #}
+    <link rel="stylesheet" href="/static/back/back_style.css" />
+
+    <style>
+        .CommentBox {
+            width: 90%;
+            margin: auto;
+
+            box-shadow: 5px 5px 5px #8888884d;
+
+        }
+
+    </style>
+</head>
+<body>
+
+{% include './head.html'%}
+{% include './head2.html'%}
+<div style="width: 65%;margin-left: 16%;padding-top: 0px;background-color: #ffffff;min-height: 1340px">
+    <div style="width: 100%;margin: auto;padding-top: 50px;background-color: #ffffff;min-height: 1px" id="more"
+         name="more">
+
+
+        {% for each in messages %}
+            <div class="CommentBox">
+                <div class="msgCon">
+                    <div class="msgBox">
+                        <div class="headUrl">
+                            <img src="/media/{{ each.auth_head }}" width="50" height="50">
+
+                            <div>
+                            <span class="title">
+                                {% if each.read == False %}
+                                    <a style="color: #FF0000">[未读]</a>
+                                {% endif %}
+                            [<a href="/login/user/message/?action=getprofile&username={{ each.comment_auth }}">{{ each.auth_nickname }}</a>] 在 <a
+                                    href='/index/content/?article_id={{ each.f_id }}' style="color: #139ff7 ">[{{ each.comment_article_title }}]</a> 回复了你
+                            </span>
+                                <span class="time">{{ each.comment_date }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="msgTxt">
+                            {% autoescape off %}{{ each.comment_content }}{% endautoescape %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    {% if messages.count >= 5 %}
+        <div style="width: 90%;margin: auto;color: #ffffff;float: bottom;float: bottom">
+            <button style="width: 100%;color:#000000;" onclick="load();" class="btn btn-info btn-sm">加载更多</button>
+        </div>
+    {% endif %}
+
+</div>
+
+{#底部#}
+{% include "foot.html" %}
+
+{#右边#}
+
+{% include 'left.html' %}
+
+<input id="currentPage" name="currentPage" value="0" type="hidden">
+
+
+
+
+
+<script>
+
+    function load() {
+
+
+        //获取到当前页码
+        var currentPage = parseInt($("#currentPage").val());
+
+        $.get("/index/message/?currentPage="+currentPage, function (data, status) {
+
+            if(data != ''){
+                for(replay in data['data']['replay']){
+                //alert(data['data'][replay])
+                $("#more").append(data['data']['replay'][replay]);
+            }
+            $("#currentPage").val(data['data']['currentPage']);
+            //var reJson = JSON.parse(data)
+            }else {
+
+                alert('已无更多消息')
+            }
+
+        });
+
+    }
+
+</script>
+</body>
+</html>

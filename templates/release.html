@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布/编辑</title>
+
+    <link rel="stylesheet" href="/static/index/site.css">
+    <link href="/static/index/index_content.css" rel="stylesheet">
+    <script src="/static/jquery-2.1.1.min.js"></script>
+
+    <link rel="stylesheet" href="/static/article/bootstrap.css">
+
+        {# 背景特效 #}
+    <link rel="stylesheet" href="/static/back/back_style.css" />
+
+    <style>
+
+        label{
+            color: black;
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+{% include './head.html'%}
+{% include './head2.html'%}
+<div style="margin-left: 16%;padding-top:50px;width: 65%;background-color: #ffffff">
+    <div style="margin: auto;padding-top:50px;width: 85%;padding-bottom: 50px;min-height: 1290px">
+        {# 发编辑 #}
+
+        {% if article %}
+
+            <h3 style="text-align: center;color: #b3b7bb;">编辑</h3>
+
+            <form method="post" action="/add/edit/">
+                <input type="hidden" id="aid" name="aid" value="{{ article.article_id }}">
+                <input type="hidden" name="action" id="action" value="edit">
+                <div>
+                    <label for="inputEmail">标题:</label>
+
+                    <input class="form-control" name="title" placeholder="在这里输入标题" type="text"
+                           value="{{ article.title }}" maxlength="80">
+
+                </div>
+
+
+                <div style="height: 80px;">
+
+                    <div style="width: 46%;float: left;padding-top: 20px">
+                        <label for="inputEmail">遗失物品:</label>
+
+                        <input class="form-control" name="item" placeholder="物品" type="text" value="{{ article.item }}" maxlength="25">
+
+                    </div>
+                    <div style="width: 46%;float:right;padding-top: 20px">
+                        <label for="inputEmail">遗失地点:</label>
+
+                        <input class="form-control" name="addr" placeholder="地点" type="text" value="{{ article.addr }}" maxlength="25">
+
+                    </div>
+
+                </div>
+
+                <div style="height: 80px;">
+
+                    <div style="width: 46%;float: left;padding-top: 20px">
+                        <label for="inputEmail">遗失时间:</label>
+
+                        <input class="form-control" name="lostdate" placeholder="地点" type="date" value="{{ article.lostdate }}">
+
+                    </div>
+                    <div style="width: 46%;float:right;padding-top: 20px">
+                        <label for="inputEmail">类型:</label>
+                        <div>
+                            <select name="lostType" class="form-control">
+                                　
+                                <option value="lost" {% if article.lost_type == 0 %}selected="selected"{% endif %}>遗失</option>
+                                　
+                                <option value="pickup" {% if article.lost_type == 1 %}selected="selected"{% endif %}>拾取</option>
+                                　
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div style="padding-top: 50px;">
+{#                    <label for="inputEmail">详细描述:</label>#}
+                    <h3 style="text-align: center;color: #b3b7bb;">详细描述</h3>
+
+                    <script type="text/javascript" src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+
+                    <textarea class="form-control" id='content' name="content" rows="4" cols="24"
+                              style="color: #000;">{{ article.content }}</textarea>
+
+                    <script type="text/javascript">CKEDITOR.replace('content');</script>
+
+                </div>
+                {% csrf_token %}
+                <button class="btn btn-success" type="submit" style="padding-top: 10px;width: 100%">更新</button>
+            </form>
+
+        {% else %}
+
+            <h2 style="text-align: center;color: #b3b7bb;">发表</h2>
+
+            <form method="post" action="/add/release/">
+                <div>
+                    <label for="inputEmail">标题:</label>
+
+                    <input class="form-control" name="title" placeholder="在这里输入标题" type="text" maxlength="80">
+
+                </div>
+
+{#                <div style="padding-top: 20px">#}
+{##}
+{#                    <label for="inputEmail">遗失时间:</label>#}
+{##}
+{#                    <input class="form-control" name="lostdate" placeholder="地点" type="date">#}
+{##}
+{#                </div>#}
+
+                <div style="height: 80px;">
+
+                    <div style="width: 46%;float: left;padding-top: 20px">
+                        <label for="inputEmail">遗失物品:</label>
+
+                        <input class="form-control" name="item" placeholder="物品" type="text" maxlength="25">
+
+                    </div>
+                    <div style="width: 46%;float:right;padding-top: 20px">
+                        <label for="inputEmail">遗失地点:</label>
+
+                        <input class="form-control" name="addr" placeholder="地点" type="text" maxlength="25">
+
+                    </div>
+
+                </div>
+
+                <div style="height: 80px;">
+
+                    <div style="width: 46%;float: left;padding-top: 20px">
+                        <label for="inputEmail">遗失时间:</label>
+
+                        <input class="form-control" name="lostdate" placeholder="地点" type="date">
+
+                    </div>
+                    <div style="width: 46%;float:right;padding-top: 20px">
+                        <label for="inputEmail">类型:</label>
+                        <div>
+                            <select name="lostType" class="form-control">
+                                　
+                                <option value="lost">遗失</option>
+                                　
+                                <option value="pickup">拾取</option>
+                                　
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div style="padding-top: 50px">
+{#                    <label for="inputEmail">详细描述:</label>#}
+                    <h3 style="text-align: center;color: #b3b7bb;">详细描述</h3>
+                    <script type="text/javascript" src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+
+                    <textarea class="form-control" id='content' name="content" rows="4" cols="24"
+                              style="color: #000"></textarea>
+
+                    <script type="text/javascript">CKEDITOR.replace('content');</script>
+
+                </div>
+                {% csrf_token %}
+                <button class="btn btn-success" type="submit" style="padding-top: 10px;width: 100%">发表</button>
+            </form>
+
+        {% endif %}
+
+
+    </div>
+</div>
+{#底部#}
+{% include "foot.html" %}
+
+{#右边#}
+
+{% include 'left.html' %}
+</body>
+</html>

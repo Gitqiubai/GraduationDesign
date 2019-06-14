@@ -1,0 +1,43 @@
+
+
+
+<link href="/static/user/alertTable/component.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/bootstrap.min.css">
+
+
+
+
+
+{#        <a class="md-trigger btn btn-primary btn-sm" data-modal="modal-9">Show Me</a>#}
+
+
+<div class="md-modal md-effect-9" id="modal-9">
+    <div class="md-content">
+        <h3>找回东西后你想说些什么.</h3>
+        <div>
+            <form action="/api/deal/" method="post">
+                <div class="modal-body">
+
+
+                    <input value="1" id="ip" name="aid" type="hidden">
+                    <textarea class="form-control" rows="5" placeholder="在这里编辑" name="content"></textarea>
+                    {% csrf_token %}
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" value="" id="aid">提交更改</button>
+                </div>
+            </form>
+{#            <button class="md-close btn-sm btn-primary">Close me!</button>#}
+        </div>
+    </div>
+</div>
+
+  <div class="md-overlay"></div>
+  <!-- the overlay element -->
+
+
+<script src="/static/user/alertTable/classie.js"></script>
+<script src="/static/user/alertTable/modalEffects.js"></script>

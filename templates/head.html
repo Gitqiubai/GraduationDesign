@@ -1,0 +1,62 @@
+<div style="position: fixed;padding-top: 0px;width: 100%;height: 50px;z-index: 99999">
+    <div style="margin-left: 80%;margin-top: 11px">
+        <p style="font-size: large;color: white">欢迎用户: {{ user_mess.nick_name }}</p>
+    </div>
+</div>
+{% if username %}
+    <nav class="primary-nav"><a class="primary-nav__brand special" title="Home" href="/home"><img
+            src="/static/index/elemental-logo-paths.svg" class="primary-nav__brand-src"></a>
+        <button class="primary-nav__item primary-nav-menu-trigger">
+            <span class="primary-nav-menu-trigger-icon octicon octicon-navicon"></span>
+            <span class="primary-nav-menu-trigger-label">Menu</span></button>
+                <div class="primary-nav-menu is-hidden" style="height: auto;">
+                    <div class="primary-nav-menu-inner">
+                        <a class="primary-nav__item" href="/index"><span class="primary-nav__item-inner" style="color:#FFFFFF;font-size: 25px">校园失物招领平台</span></a>
+                    </div>
+
+                </div>
+
+{#        <div class="primary-nav-menu is-hidden" style="height: auto;">#}
+{#            <div class="primary-nav-menu-inner">#}
+{#                <a class="primary-nav__item" href="/index"><span class="primary-nav__item-inner">首页</span></a>#}
+{#                <a class="primary-nav__item" href="/index/edit/"><span class="primary-nav__item-inner">发布</span></a>#}
+{#                <a class="primary-nav__item" href="/login/user/message/"><span class="primary-nav__item-inner">个人信息</span></a>#}
+{#                {% if user_mess.is_superuser %}#}
+{#                    <a class="primary-nav__item" href="/reviewed/"><span class="primary-nav__item-inner">审核</span></a>#}
+{#                {% endif %}#}
+{#                <a class="primary-nav__item" href="/recover"><span class="primary-nav__item-inner">已找回</span></a>#}
+{#                <a class="primary-nav__item" href="/spinner"><span class="primary-nav__item-inner">Spinner</span></a>#}
+{#                <a class="primary-nav__item" href="/index/message/"><span class="primary-nav__item-inner">消息{% if message %}[{{ message }}]{% endif %}</span></a>#}
+{#                <a class="primary-nav__item" href="/misc"><span class="primary-nav__item-inner">Misc</span></a>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+
+        <a href="/login/user/message/" target="_blank" title="查看主页" class="primary-nav__brand right"><img
+                src="/media/{{ user_mess.headImage }}" class="primary-nav__brand-src"></a>
+    </nav>
+{% else %}
+
+    <nav class="primary-nav"><a class="primary-nav__brand special" title="Home" href="/home"><img
+            src="/static/index/elemental-logo-paths.svg" class="primary-nav__brand-src"></a>
+        <button class="primary-nav__item primary-nav-menu-trigger">
+            <span class="primary-nav-menu-trigger-icon octicon octicon-navicon"></span>
+            <span class="primary-nav-menu-trigger-label">Menu</span></button>
+{#        <div class="primary-nav-menu is-hidden" style="height: auto;">#}
+{#            <div class="primary-nav-menu-inner">#}
+{#                <a class="primary-nav__item" href="/index"><span class="primary-nav__item-inner">首页</span></a>#}
+{#                <a class="primary-nav__item" href="/login"><span class="primary-nav__item-inner">发布</span></a>#}
+{#                <a class="primary-nav__item" href="/login"><span class="primary-nav__item-inner">个人信息</span></a>#}
+{##}
+{#                <a class="primary-nav__item" href="/recover"><span class="primary-nav__item-inner">已找回</span></a>#}
+{#                <a class="primary-nav__item" href="/spinner"><span class="primary-nav__item-inner">Spinner</span></a>#}
+{#                <a class="primary-nav__item" href="/login"><span class="primary-nav__item-inner">消息</span></a>#}
+{#                <a class="primary-nav__item" href="/misc"><span class="primary-nav__item-inner">Misc</span></a>#}
+{#            </div>#}
+{#        </div>#}
+        <a href="/login" target="_blank" title="查看主页" class="primary-nav__brand right"><img
+                src="/media/upload/head/qiubai_15563768026899672.jpg" class="primary-nav__brand-src"></a>
+    </nav>
+
+{% endif %}
